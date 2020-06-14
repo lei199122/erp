@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sxt.system.mapper.PermissionMapper">
+		
+		<select id="queryPermissionMaxOrderNum" resultType="java.lang.Integer">
+			select max(ordernum) from sys_permission;
+		</select>
+		
+		<select id="queryPermissionCountByPid" resultType="java.lang.Integer">
+			select count(1) from sys_permission where pid=#{id}
+		</select>
+		<!-- 根据角色ID查询当前角色拥有的权限ID集合 -->
+		<select id="queryPermissionIdsByRoleId" resultType="java.lang.Integer">
+			select pid from sys_role_permission where rid=#{roleId}
+		</select>
+		
+		<!-- 根据角色ID集合查询菜单和权限ID -->
+		<select id="queryPermissionIdsByRoleIds" resultType="java.lang.Integer">
+			select distinct pid from sys_role_permission
+			<where>
+				<foreach collection="roleIds" open="rid in (" close=" )" separator="," item="sn">
+					#{sn}
+				</foreach>
+			</where>
+		</select>
+</mapper>
